@@ -34,8 +34,17 @@ services:
       PROBE_TIMEOUT: "1.5"
       REQUEST_TIMEOUT: "15"
       DRAIN_DEFAULT_TIMEOUT: "30"
+      ROLLOUT_BASELINE_NODE: "node1"
+      ROLLOUT_CANARY_NODE: "node2"
+      ROLLOUT_STATE_DIR: "/data"
     ports:
       - "18080:8000"
     depends_on:
       - upstream1
       - upstream2
+    volumes:
+      # 持久化最后成功设置的灰度策略，容器重启后自动加载
+      - gateway-rollout-data:/data
+
+volumes:
+  gateway-rollout-data:
